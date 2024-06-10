@@ -11,9 +11,15 @@ function appendToDisplay(input) {
     alert("Maximum digit limit reached");
   }
 }
+
 function clearDisplay() {
   display.value = "";
 }
+
+function deleteLastCharacter() {
+  display.value = display.value.slice(0, -1);
+}
+
 function calculate() {
   try {
     display.value = math.evaluate(display.value).toString();
@@ -21,16 +27,21 @@ function calculate() {
     display.value = "Error";
   }
 }
-buttons.addEventListener("click", (event) => {
-  const target = event.target;
-  if (target.classList.contains("button")) {
-    const value = target.getAttribute("data-value");
-    if (value) {
-      appendToDisplay(value);
-    } else if (target.id === "clear") {
-      clearDisplay();
-    } else if (target.id === "equals") {
-      calculate();
+
+Array.from(buttons).forEach(button => {
+  button.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.classList.contains("button")) {
+      const value = target.getAttribute("data-value");
+      if (value) {
+        appendToDisplay(value);
+      } else if (target.id === "clear") {
+        clearDisplay();
+      } else if (target.id === "equals") {
+        calculate();
+      } else if (target.id === "backspace") {
+        deleteLastCharacter();
+      }
     }
-  }
+  });
 });
